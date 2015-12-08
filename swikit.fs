@@ -24,12 +24,17 @@ THIS CODE IS TEMPORARILY NOT NEEDED ANYMORE
 VARIABLE interpret-word
 
 : ` ( -- )
-\ Splits input by whitespace
-\ and feeds it to 'interpret-word'
+\ Marks the beginning of an infix
+\ region.
 	BEGIN
-		PARSE-WORD 2DUP
+		PARSE-WORD 2DUP \ Split input by whitespace
 	s" ´" COMPARE WHILE
 	interpret-word @ EXECUTE
 	REPEAT
-	2DROP
+	EVALUATE \ e.g. ´
+;
+
+: ´ ( -- )
+	\ Marks the end of an
+	\ infix region
 ;
