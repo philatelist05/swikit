@@ -8,5 +8,6 @@ CR .( Running all tests ) CR
 
   S" ttester.fth" INCLUDED
   S" stacktest.fs" INCLUDED
+  S" swikittest.fs" INCLUDED
 
 CR CR .( tests completed ) CR CR

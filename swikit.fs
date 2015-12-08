@@ -1,3 +1,7 @@
+
+0 [IF]
+THIS CODE IS TEMPORARILY NOT NEEDED ANYMORE
+
 0 VALUE src_size
 0 VALUE src_pointer
 0 VALUE fd-in
@@ -13,4 +17,19 @@
 
 : DEBUG_I/O
 	cr src_pointer src_size type
+;
+[THEN]
+\ ------------------------------------------------------------------------
+\ Holds the address of the expression parser
+VARIABLE interpret-word
+
+: ` ( -- )
+\ Splits input by whitespace
+\ and feeds it to 'interpret-word'
+	BEGIN
+		PARSE-WORD 2DUP
+	s" ´" COMPARE WHILE
+	interpret-word @ EXECUTE
+	REPEAT
+	2DROP
 ;
