@@ -1,0 +1,3 @@
+install: sh -e deps.sh "${TRAVIS_OS_NAME:-linux}" gforth
+script: gforth test/alltests.fs | grep Test-OK
+sudo: required

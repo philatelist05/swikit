@@ -11,4 +11,4 @@ CR .( Running all tests ) CR
   S" swikittest.fs" INCLUDED
   S" operatortest.fs" INCLUDED
 
-CR CR .( tests completed ) CR CR
+CR CR .( Test-OK ) CR CR
