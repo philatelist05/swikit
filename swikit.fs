@@ -9,6 +9,8 @@ INCLUDE operator.fs
 
 \ Restore original compilation wordlist
 SET-CURRENT
+\ Restore original search order
+PREVIOUS
 
 \ Holds the address of the expression parser
 VARIABLE interpret-word
@@ -28,6 +30,3 @@ VARIABLE interpret-word
 	\ Marks the end of an
 	\ infix region
 ;
-
-\ Restore original search order
-PREVIOUS
