@@ -8,7 +8,7 @@ T{ -> }T
 \ ------------------------------------------------------------------------
 TESTING INTERPRETATION WITH DROP
 
-' 2DROP interpret-word !
+' 2DROP IS interpret-expr
 
 T{ ` ´ -> }T
 T{ 1 ` ´  -> 1 }T
@@ -25,7 +25,7 @@ T{ 1 ` aa bb cc ´ 2 -> 1 2 }T
 \ ------------------------------------------------------------------------
 TESTING INTERPRETATION WITH EVALUATE
 
-' EVALUATE interpret-word !
+' EVALUATE IS interpret-expr
 
 T{ ` ´ -> }T
 T{ 1 ` ´  -> 1 }T

@@ -2,6 +2,9 @@ S" ../operator.fs" INCLUDED
 
 CR CR
 
+also infix-words
+
+
 \ ------------------------------------------------------------------------
 TESTING BASIC ASSUMPTIONS
 
@@ -104,3 +107,5 @@ T{ +stack ' * condition rule5 EXECUTE -> FALSE }T
 T{ +stack ' / condition rule5 EXECUTE -> FALSE }T
 T{ +stack ' ^ condition rule5 EXECUTE -> TRUE }T
 
+
+PREVIOUS

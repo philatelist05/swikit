@@ -1,3 +1,9 @@
+\ Define new vocabulary and
+\ set in on top of search order
+GET-CURRENT
+VOCABULARY infix-words ALSO infix-words
+DEFINITIONS
+
 INCLUDE stack.fs
 
 \ associativity
@@ -8,11 +14,6 @@ INCLUDE stack.fs
 \ offsets for decision table
 1 CONSTANT condition
 0 CONSTANT action
-
-\ Stacks
-15 CONSTANT stack-size
-CREATE operatorstack stack-size INIT-STACK ,
-CREATE operandstack stack-size INIT-STACK ,
 
 
 \ Operator implementations
@@ -31,36 +32,17 @@ DEFER p(
 DEFER p)
 
 
-: OPERATOR ( n1 n2 n3 n4 --  )
-	CREATE , , , ,
-	DOES> ( n1 a-addr -- n2 )
-	SWAP CELLS + @
-;
 
 \ Some helper words
-: prec ( op-xt -- n )
-	0 SWAP EXECUTE
-;
+DEFER op-prec
 
-: #params ( op-xt -- n )
-	2 SWAP EXECUTE
-;
+DEFER op-#params
 
-: exec ( op-xt -- )
-	3 SWAP EXECUTE
-	EXECUTE
-;
+DEFER op-exec
 
-: is-left? ( op-xt -- ? )
-	1 SWAP EXECUTE
-	left =
-;
+DEFER op-isleft?
 
-: is-right? ( op-xt -- ? )
-	1 SWAP EXECUTE
-	right =
-;
-
+DEFER op-isright?
 
 
 \ Definition of Rules
@@ -73,11 +55,18 @@ DEFER p)
 
 
 \ Condition ( stack op-xt -- ? )    Action ( stack op-xt -- )
-:NONAME SWAP DROP #params 0 = ;     :NONAME exec DROP ;          RULE rule1 \ no params -> directly evaluate
-:NONAME prec SWAP POP prec > ;      :NONAME SWAP PUSH ;          RULE rule2 \ prec of incoming symbol > prec top of stack -> push
-:NONAME prec SWAP POP prec < ;      :NONAME SWAP POP exec PUSH ; RULE rule3 \ prec of incoming symbol < prec top of stack -> pop top and push incoming
-:NONAME SWAP DROP is-left? ;        :NONAME SWAP POP exec PUSH ; RULE rule4 \ equal prec and left-assoc -> pop top and push incoming
-:NONAME SWAP DROP is-right? ;       :NONAME SWAP PUSH ;          RULE rule5 \ equal prec and right-assoc -> push
+:NONAME SWAP DROP op-#params 0 = ;     :NONAME op-exec DROP ;          RULE rule1 \ no params -> directly evaluate
+:NONAME op-prec SWAP POP op-prec > ;   :NONAME SWAP PUSH ;             RULE rule2 \ prec of incoming symbol > prec top of stack -> push
+:NONAME op-prec SWAP POP op-prec < ;   :NONAME SWAP POP op-exec PUSH ; RULE rule3 \ prec of incoming symbol < prec top of stack -> pop top and push incoming
+:NONAME SWAP DROP op-isleft? ;         :NONAME SWAP POP op-exec PUSH ; RULE rule4 \ equal prec and left-assoc -> pop top and push incoming
+:NONAME SWAP DROP op-isright? ;        :NONAME SWAP PUSH ;             RULE rule5 \ equal prec and right-assoc -> push
+
+
+: OPERATOR ( n1 n2 n3 n4 --  )
+	CREATE , , , ,
+	DOES> ( n1 a-addr -- n2 )
+	SWAP CELLS + @
+;
 
 
 \ func  #params   assoc  precedence          name
@@ -89,4 +78,39 @@ DEFER p)
 ' p(      0        left       0       OPERATOR (
 ' p)      0        left       0       OPERATOR )
 
+
+\ Restore original compilation wordlist
+SET-CURRENT
+
+: prec \ ( op-xt -- n )
+	0 SWAP EXECUTE
+;
+
+: #params \ ( op-xt -- n )
+	2 SWAP EXECUTE
+;
+
+: exec \ ( op-xt -- )
+	3 SWAP EXECUTE
+	EXECUTE
+;
+
+: is-left? \ ( op-xt -- ? )
+	1 SWAP EXECUTE
+	left =
+;
+
+: is-right? \ ( op-xt -- ? )
+	1 SWAP EXECUTE
+	right =
+;
+
+' prec IS op-prec
+' #params IS op-#params
+' exec IS op-exec
+' is-left? IS op-isleft?
+' is-right? IS op-isright?
+
+\ Restore original search order
+PREVIOUS
 
