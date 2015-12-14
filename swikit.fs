@@ -13,7 +13,7 @@ CREATE operandstack stack-size INIT-STACK ,
 	ROT ROT 2DROP
 	0 =
 	IF \ rest length == 0 -> a fully converted number
-		operandstack SWAP PUSH \ push number (single cell !) to operand stack
+		operandstack SWAP PUSH \ push number (single cell) to operand stack
 	ELSE \ no number
 		THROW
 	THEN
@@ -26,13 +26,23 @@ CREATE operandstack stack-size INIT-STACK ,
 ;
 
 : PERFORM-INFIX-CONVERSION ( xt -- )
-	
+	R>
+	BEGIN
+		operatorstack ISEMPTY? ( ? )
+		operatorstack POP SWAP OVER DUP ( op-xt ? op-xt op-xt )
+		prec R@ prec > R@ is-left? AND ( op-xt ? op-xt ? )
+		SWAP prec R@ >= R@ is-right? AND ( op-xt ? ? ?)
+		OR AND ( op-xt ? )
+	WHILE
+		exec
+	REPEAT ( op-xt )
+	DROP >R operatorstack PUSH
 ;
 
 : HANDLE-WORD ( count c-addr -- )
 	SWAP INFIX-WID SEARCH-WORDLIST ( 0 | xt +-1  )
 	IF \ found
-		DROP PERFORM-INFIX-CONVERSION
+		PERFORM-INFIX-CONVERSION
 	ELSE \ not found
 		THROW
 	THEN
@@ -40,6 +50,7 @@ CREATE operandstack stack-size INIT-STACK ,
 
 : TO-INFIX ( count c-addr -- )
 	HANDLE-NUMBER
+	HANDLE-WORD
 ;
 
 

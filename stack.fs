@@ -37,3 +37,7 @@
   \ pushes the number of elements
   @
 ;
+
+: ISEMPTY? ( a-addr -- ? )
+  SIZE 0 =
+;

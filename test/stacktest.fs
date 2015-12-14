@@ -51,3 +51,14 @@ HERE CONSTANT addr
 T{ addr s1-addr PUSH -> }T
 T{ s1-addr SIZE -> 1 }T
 T{ s1-addr POP -> addr }T
+
+\ ------------------------------------------------------------------------
+TESTING ISEMPTY
+
+1 INIT-STACK VALUE s-empty
+
+1 INIT-STACK VALUE s-nonempty
+1 s-nonempty PUSH
+
+T{ s-empty ISEMPTY? -> TRUE }T
+T{ s-nonempty ISEMPTY? -> FALSE }T
