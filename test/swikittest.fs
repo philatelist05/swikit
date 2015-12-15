@@ -12,6 +12,36 @@ INCLUDE ../swikit.fs
 		RDROP
 ;
 
+
+DEFER add
+DEFER substract
+DEFER multiply
+DEFER divide
+DEFER topower
+
+
+\ some predefined stacks with specific content
+
+: _operatorstack
+	operatorstack CLEAR
+;
+
+: +operatorstack 
+	_operatorstack
+	['] add operatorstack PUSH
+;
+
+: -operatorstack 
+	_operatorstack
+	['] substract operatorstack PUSH
+;
+
+: ^operatorstack
+	_operatorstack
+	['] topower operatorstack PUSH
+;
+
+
 \ ------------------------------------------------------------------------
 TESTING BASIC ASSUMPTIONS
 
@@ -84,12 +114,6 @@ T{ s" minus" LOOKUP-WORD SWAP DROP -> TRUE }T
 \ ------------------------------------------------------------------------
 TESTING PERFORMING INFIX CONVERSION
 
-DEFER add
-DEFER substract
-DEFER multiply
-DEFER divide
-DEFER topower
-
 ALSO infix-words
 ' + IS add
 ' - IS substract
@@ -100,28 +124,53 @@ PREVIOUS
 
 
 \ emtpy operator stack -> push to operator stack
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' substract PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
 
 
 
 \ emtpy operator stack -> nothing to execute
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' add PERFORM-INFIX-CONVERSION -> }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' substract PERFORM-INFIX-CONVERSION -> }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' multiply PERFORM-INFIX-CONVERSION -> }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' divide PERFORM-INFIX-CONVERSION -> }T
-T{	operatorstack CLEAR 
+T{	_operatorstack 
 	' topower PERFORM-INFIX-CONVERSION -> }T
+
+
+\ both operators are left associative but different precedence
+T{	+operatorstack
+	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+T{	+operatorstack
+	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+
+\ left and right associative
+T{	+operatorstack
+	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+	
+\ both operators are left associative but different precedence
+T{	-operatorstack
+	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+T{	-operatorstack
+	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+
+\ left and right associative
+T{	-operatorstack
+	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+
+\ both operators are right associative with same precedence
+T{	^operatorstack
+	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
 

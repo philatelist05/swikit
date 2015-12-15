@@ -32,23 +32,24 @@ stack-size INIT-STACK VALUE operandstack
 	INFIX-WID SEARCH-WORDLIST
 ;
 
+
 \ implementation of the Shard-Yard algorithm
 : PERFORM-INFIX-CONVERSION ( xt -- )
 	>R
 	BEGIN
 		operatorstack ISEMPTY? INVERT ( ? )
 		IF
-			operatorstack POP DUP DUP ( op-xt op-xt op-xt )
-			prec R@ prec > R@ is-left? AND ( op-xt op-xt ? )
-			SWAP prec R@ >= R@ is-right? AND ( op-xt ? ? )
-			OR ( op-xt ? )
+			operatorstack PEEK DUP ( op-xt op-xt )
+			prec R@ prec >= R@ is-left? AND ( op-xt ? )
+			SWAP prec R@ prec > R@ is-right? AND ( ? ? )
+			OR ( ? )
 		ELSE \ operatorstack is empty
-			FALSE DUP ( ? ? )
+			FALSE ( ? )
 		THEN
-	WHILE ( op-xt )
-		exec
-	REPEAT ( op-xt|? )
-	DROP R> operatorstack PUSH
+	WHILE
+		operatorstack POP exec
+	REPEAT
+	R> operatorstack PUSH
 ;
 
 : HANDLE-WORD ( count c-addr -- )

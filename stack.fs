@@ -30,11 +30,17 @@
   DUP @ 1+ CELLS + ! \ store n
 ;
 
+: PEEK ( a-addr -- n)
+	\ copies a value from the stack
+	\ to the data stack
+	DUP UNDERFLOW?
+	DUP @ 1+ CELLS + @
+;
+
 : POP ( a-addr -- n )
   \ takes a value from the stack
   \ and pushes it onto the data stack
-  DUP UNDERFLOW?
-  DUP DUP @ 1+ CELLS + @ >R \ retrieve element
+  DUP PEEK >R \ retrieve element
   DUP @ 1- SWAP ! \ offset--
   R>
 ;

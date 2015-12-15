@@ -73,3 +73,12 @@ TESTING CLEAR
 T{ s2 SIZE -> 2 }T
 T{ s2 CLEAR s2 SIZE -> 0 }T
 T{ s2 catchpop -> s2 }T
+
+\ ------------------------------------------------------------------------
+TESTING PEEK
+
+1 INIT-STACK VALUE s1
+10 s1 PUSH
+
+T{ s1 PEEK -> 10 }T
+T{ s1 PEEK -> 10 }T
