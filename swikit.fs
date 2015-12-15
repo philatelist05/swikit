@@ -62,8 +62,11 @@ stack-size INIT-STACK VALUE operandstack
 ;
 
 : TO-INFIX ( count c-addr -- )
-	HANDLE-NUMBER
-	HANDLE-WORD
+	TRY
+		HANDLE-NUMBER
+	ENDTRY-IFERROR
+		HANDLE-WORD
+	THEN
 ;
 
 

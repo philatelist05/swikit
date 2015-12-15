@@ -18,30 +18,20 @@ INCLUDE stack.fs
 
 \ Operator implementations
 DEFER power
-
 DEFER mul
-
 DEFER div
-
 DEFER plus
-
 DEFER minus
-
 DEFER p(
-
 DEFER p)
 
 
 
 \ Some helper words
 DEFER op-prec
-
 DEFER op-#params
-
 DEFER op-exec
-
 DEFER op-isleft?
-
 DEFER op-isright?
 
 
