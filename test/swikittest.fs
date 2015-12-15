@@ -65,6 +65,15 @@ T{ s" -999" HANDLE-NUMBER operandstack >datastack -> -999 }T
 T{ s" 999" HANDLE-NUMBER operandstack >datastack -> 999 }T
 
 \ ------------------------------------------------------------------------
-TESTING SHARD-YARD ALGORITHM
+TESTING WORD LOOKUP
 
-\ TBD
+: dummy ;
+
+T{ s" abc" LOOKUP-WORD -> 0 }T
+T{ s"  " LOOKUP-WORD -> 0 }T
+T{ s" dummy" LOOKUP-WORD -> 0 }T
+T{ s" +" LOOKUP-WORD SWAP DROP -> -1 }T
+T{ s" -" LOOKUP-WORD SWAP DROP -> -1 }T
+T{ s" *" LOOKUP-WORD SWAP DROP -> -1 }T
+T{ s" /" LOOKUP-WORD SWAP DROP -> -1 }T
+T{ s" ^" LOOKUP-WORD SWAP DROP -> -1 }T

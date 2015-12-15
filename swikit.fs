@@ -17,10 +17,19 @@ stack-size INIT-STACK VALUE operandstack
 	THEN
 ;
 
-: INFIX-WID \ push infix wordlist on stack
+: INFIX-WID ( -- wid )
+	\ push infix wordlist on stack
+	\ do not alter current wordlists
 	ALSO infix-words
 	context @
 	PREVIOUS
+;
+
+: LOOKUP-WORD ( count c-addr -- 0 | xt +-1 )
+	\ search word in infox word list
+	\ and return -1 for default compilation
+	\ semantics
+	INFIX-WID SEARCH-WORDLIST
 ;
 
 \ implementation of the Shard-Yard algorithm
@@ -39,7 +48,7 @@ stack-size INIT-STACK VALUE operandstack
 ;
 
 : HANDLE-WORD ( count c-addr -- )
-	SWAP INFIX-WID SEARCH-WORDLIST ( 0 | xt +-1  )
+	LOOKUP-WORD
 	IF \ found
 		PERFORM-INFIX-CONVERSION
 	ELSE \ not found
