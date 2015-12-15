@@ -1,3 +1,9 @@
+\ A simple implementation of an in-memory stack
+\ Idx          |     
+\ 0            | Offset (number of stored elements)
+\ 1            | Capacity
+\ 2 - (n - 2)  | content
+
 
 : OVERFLOW? ( a-addr -- )
   DUP CELL+ @ \ retrieve capacity
@@ -40,4 +46,8 @@
 
 : ISEMPTY? ( a-addr -- ? )
   SIZE 0 =
+;
+
+: CLEAR ( a-addr -- )
+	0 SWAP !
 ;

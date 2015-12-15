@@ -1,4 +1,4 @@
-S" ../stack.fs" INCLUDED
+INCLUDE ../stack.fs
 
 \ ------------------------------------------------------------------------
 TESTING BASIC ASSUMPTIONS
@@ -62,3 +62,14 @@ TESTING ISEMPTY
 
 T{ s-empty ISEMPTY? -> TRUE }T
 T{ s-nonempty ISEMPTY? -> FALSE }T
+
+\ ------------------------------------------------------------------------
+TESTING CLEAR
+
+2 INIT-STACK VALUE s2
+0 s2 PUSH
+1 s2 PUSH
+
+T{ s2 SIZE -> 2 }T
+T{ s2 CLEAR s2 SIZE -> 0 }T
+T{ s2 catchpop -> s2 }T

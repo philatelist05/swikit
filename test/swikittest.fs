@@ -1,5 +1,4 @@
-S" ../swikit.fs" INCLUDED
-
+INCLUDE ../swikit.fs
 \ ------------------------------------------------------------------------
 \ Some utils for easier testing
 
@@ -67,13 +66,62 @@ T{ s" 999" HANDLE-NUMBER operandstack >datastack -> 999 }T
 \ ------------------------------------------------------------------------
 TESTING WORD LOOKUP
 
-: dummy ;
 
-T{ s" abc" LOOKUP-WORD -> 0 }T
-T{ s"  " LOOKUP-WORD -> 0 }T
-T{ s" dummy" LOOKUP-WORD -> 0 }T
-T{ s" +" LOOKUP-WORD SWAP DROP -> -1 }T
-T{ s" -" LOOKUP-WORD SWAP DROP -> -1 }T
-T{ s" *" LOOKUP-WORD SWAP DROP -> -1 }T
-T{ s" /" LOOKUP-WORD SWAP DROP -> -1 }T
-T{ s" ^" LOOKUP-WORD SWAP DROP -> -1 }T
+T{ s" abc" LOOKUP-WORD -> FALSE }T
+T{ s"  " LOOKUP-WORD -> FALSE }T
+T{ s" dummy" LOOKUP-WORD -> FALSE }T
+T{ s" +" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" -" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" *" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" /" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" ^" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" power" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" mul" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" div" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" plus" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" minus" LOOKUP-WORD SWAP DROP -> TRUE }T
+
+\ ------------------------------------------------------------------------
+TESTING PERFORMING INFIX CONVERSION
+
+DEFER add
+DEFER substract
+DEFER multiply
+DEFER divide
+DEFER topower
+
+ALSO infix-words
+' + IS add
+' - IS substract
+' * IS multiply
+' / IS divide
+' ^ IS topower
+PREVIOUS
+
+
+\ emtpy operator stack -> push to operator stack
+T{	operatorstack CLEAR 
+	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	operatorstack CLEAR 
+	' substract PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	operatorstack CLEAR 
+	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	operatorstack CLEAR 
+	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	operatorstack CLEAR 
+	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+
+
+
+\ emtpy operator stack -> nothing to execute
+T{	operatorstack CLEAR 
+	' add PERFORM-INFIX-CONVERSION -> }T
+T{	operatorstack CLEAR 
+	' substract PERFORM-INFIX-CONVERSION -> }T
+T{	operatorstack CLEAR 
+	' multiply PERFORM-INFIX-CONVERSION -> }T
+T{	operatorstack CLEAR 
+	' divide PERFORM-INFIX-CONVERSION -> }T
+T{	operatorstack CLEAR 
+	' topower PERFORM-INFIX-CONVERSION -> }T
+

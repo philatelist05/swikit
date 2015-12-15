@@ -37,13 +37,17 @@ stack-size INIT-STACK VALUE operandstack
 	>R
 	BEGIN
 		operatorstack ISEMPTY? INVERT ( ? )
-		operatorstack POP SWAP OVER DUP ( op-xt ? op-xt op-xt )
-		prec R@ prec > R@ is-left? AND ( op-xt ? op-xt ? )
-		SWAP prec R@ >= R@ is-right? AND ( op-xt ? ? ?)
-		OR AND ( op-xt ? )
-	WHILE
+		IF
+			operatorstack POP DUP DUP ( op-xt op-xt op-xt )
+			prec R@ prec > R@ is-left? AND ( op-xt op-xt ? )
+			SWAP prec R@ >= R@ is-right? AND ( op-xt ? ? )
+			OR ( op-xt ? )
+		ELSE \ operatorstack is empty
+			FALSE DUP ( ? ? )
+		THEN
+	WHILE ( op-xt )
 		exec
-	REPEAT ( op-xt )
+	REPEAT ( op-xt|? )
 	DROP R> operatorstack PUSH
 ;
 

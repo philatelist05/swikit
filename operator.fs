@@ -111,6 +111,15 @@ SET-CURRENT
 ' is-left? IS op-isleft?
 ' is-right? IS op-isright?
 
+
+' ABORT IS power
+' ABORT IS mul
+' ABORT IS div
+' ABORT IS plus
+' ABORT IS minus
+' ABORT IS p(
+' ABORT IS p)
+
 \ Restore original search order
 PREVIOUS
 

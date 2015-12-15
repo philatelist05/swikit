@@ -1,4 +1,4 @@
-S" ../operator.fs" INCLUDED
+INCLUDE ../operator.fs
 
 CR CR
 
