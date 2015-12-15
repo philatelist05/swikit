@@ -1,21 +1,19 @@
 INCLUDE operator.fs
-
+INCLUDE stack.fs
 
 \ Stacks
 15 CONSTANT stack-size
-CREATE operatorstack stack-size INIT-STACK ,
-CREATE operandstack stack-size INIT-STACK ,
+stack-size INIT-STACK VALUE operatorstack
+stack-size INIT-STACK VALUE operandstack
 
 
 
-: HANDLE-NUMBER ( count c-addr -- )
-	0. 2SWAP >NUMBER
-	ROT ROT 2DROP
-	0 =
+: HANDLE-NUMBER ( c-addr count -- )
+	s>number?
 	IF \ rest length == 0 -> a fully converted number
-		operandstack SWAP PUSH \ push number (single cell) to operand stack
+		DROP operandstack PUSH \ push number (single cell) to operand stack
 	ELSE \ no number
-		THROW
+		2DROP THROW
 	THEN
 ;
 
@@ -25,10 +23,11 @@ CREATE operandstack stack-size INIT-STACK ,
 	PREVIOUS
 ;
 
+\ implementation of the Shard-Yard algorithm
 : PERFORM-INFIX-CONVERSION ( xt -- )
-	R>
+	>R
 	BEGIN
-		operatorstack ISEMPTY? ( ? )
+		operatorstack ISEMPTY? INVERT ( ? )
 		operatorstack POP SWAP OVER DUP ( op-xt ? op-xt op-xt )
 		prec R@ prec > R@ is-left? AND ( op-xt ? op-xt ? )
 		SWAP prec R@ >= R@ is-right? AND ( op-xt ? ? ?)
@@ -36,7 +35,7 @@ CREATE operandstack stack-size INIT-STACK ,
 	WHILE
 		exec
 	REPEAT ( op-xt )
-	DROP >R operatorstack PUSH
+	DROP R> operatorstack PUSH
 ;
 
 : HANDLE-WORD ( count c-addr -- )
