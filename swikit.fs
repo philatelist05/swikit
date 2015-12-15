@@ -25,7 +25,7 @@ stack-size INIT-STACK VALUE operandstack
 	PREVIOUS
 ;
 
-: LOOKUP-WORD ( count c-addr -- 0 | xt +-1 )
+: LOOKUP-WORD ( count c-addr -- 0 | xt -1 )
 	\ search word in infox word list
 	\ and return -1 for default compilation
 	\ semantics
@@ -82,7 +82,12 @@ DEFER interpret-expr
 : ´ ( -- )
 	\ Marks the end of an
 	\ infix region
-	
+	\ pop entire stack and exec
+	BEGIN
+		operatorstack ISEMPTY? INVERT
+	WHILE
+		operatorstack POP exec
+	REPEAT
 ;
 
 ' TO-INFIX IS interpret-expr
