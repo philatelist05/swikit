@@ -2,7 +2,7 @@ INCLUDE ../swikit.fs
 \ ------------------------------------------------------------------------
 \ Some utils for easier testing
 
-: >datastack ( a-addr -- ... )
+: stack> ( a-addr -- n1 ... nj )
 	>R
 	BEGIN
 		R@ ISEMPTY? INVERT
@@ -87,11 +87,11 @@ T{ 1 2 ` swap ´ 3 -> 2 1 3 }T
 \ ------------------------------------------------------------------------
 TESTING NUMBER CONVERSION
 
-T{ s" 1" HANDLE-NUMBER operandstack >datastack -> 1 }T
-T{ s" 0" HANDLE-NUMBER operandstack >datastack -> 0 }T
-T{ s" -1" HANDLE-NUMBER operandstack >datastack -> -1 }T
-T{ s" -999" HANDLE-NUMBER operandstack >datastack -> -999 }T
-T{ s" 999" HANDLE-NUMBER operandstack >datastack -> 999 }T
+T{ s" 1" HANDLE-NUMBER operandstack stack> -> 1 }T
+T{ s" 0" HANDLE-NUMBER operandstack stack> -> 0 }T
+T{ s" -1" HANDLE-NUMBER operandstack stack> -> -1 }T
+T{ s" -999" HANDLE-NUMBER operandstack stack> -> -999 }T
+T{ s" 999" HANDLE-NUMBER operandstack stack> -> 999 }T
 
 \ ------------------------------------------------------------------------
 TESTING WORD LOOKUP

@@ -24,7 +24,7 @@ INCLUDE stack.fs
 
 \ operator implementations
 : power ( a-addr -- )
-	BINARY
+	DUP BINARY
 	
 	1 SWAP ?DUP 
 	IF 
@@ -34,22 +34,28 @@ INCLUDE stack.fs
 		LOOP
 	THEN
 	NIP
+	
+	SWAP PUSH
 ;
 
 : mul ( a-addr -- )
-	BINARY *
+	DUP BINARY *
+	SWAP PUSH
 ;
 
 : div ( a-addr -- )
-	BINARY /
+	DUP BINARY /
+	SWAP PUSH
 ;
 
 : plus ( a-addr -- )
-	BINARY +
+	DUP BINARY +
+	SWAP PUSH
 ;
 
 : minus ( a-addr -- )
-	BINARY -
+	DUP BINARY -
+	SWAP PUSH
 ;
 
 \ Currently not implemented!
