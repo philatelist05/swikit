@@ -31,6 +31,12 @@ T{ 2 3 >stack mul -> 6 }T
 T{ 3 2 >stack mul -> 6 }T
 T{ 2 6 >stack div -> 3 }T
 T{ 6 2 >stack div -> 0 }T \ integer division
+T{ 3 2 >stack power -> 8 }T
+T{ 0 2 >stack power -> 1 }T
+T{ 2 0 >stack power -> 0 }T
+T{ 1 2 >stack power -> 2 }T
+T{ 1 -2 >stack power -> -2 }T
+T{ 3 -2 >stack power -> -8 }T
 
 
 \ ------------------------------------------------------------------------

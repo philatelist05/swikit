@@ -15,25 +15,41 @@ INCLUDE stack.fs
 1 CONSTANT condition
 0 CONSTANT action
 
+
+
+: BINARY ( a-addr -- n1 n2)
+	DUP POP SWAP POP SWAP
+;
+
+
 \ operator implementations
-: power
-	ABORT \ no ^ in forth
+: power ( a-addr -- )
+	BINARY
+	
+	1 SWAP ?DUP 
+	IF 
+		0 
+		DO
+			OVER * 
+		LOOP
+	THEN
+	NIP
 ;
 
 : mul ( a-addr -- )
-	DUP POP SWAP POP SWAP *
+	BINARY *
 ;
 
 : div ( a-addr -- )
-	DUP POP SWAP POP SWAP /
+	BINARY /
 ;
 
 : plus ( a-addr -- )
-	DUP POP SWAP POP SWAP +
+	BINARY +
 ;
 
 : minus ( a-addr -- )
-	DUP POP SWAP POP SWAP -
+	BINARY -
 ;
 
 \ Currently not implemented!
