@@ -182,8 +182,29 @@ TESTING PERFORMING INFIX CONVERSION EXECUTE OPERATOR
 T{	' add >operatorstack
 	2 1 >operandstack
 	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-
 T{	' add >operatorstack
 	2 1 >operandstack
 	' add PERFORM-INFIX-CONVERSION operandstack> -> 3 }T
+
+T{	' add >operatorstack
+	2 1 >operandstack
+	' substract PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	' add >operatorstack
+	2 1 >operandstack
+	' substract PERFORM-INFIX-CONVERSION operandstack> -> 3 }T
+
+\ left associative and less precendence
+T{	' multiply >operatorstack
+	2 1 >operandstack
+	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	' multiply >operatorstack
+	2 1 >operandstack
+	' add PERFORM-INFIX-CONVERSION operandstack> -> 2 }T
+
+T{	' multiply >operatorstack
+	2 1 >operandstack
+	' substract PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+T{	' multiply >operatorstack
+	2 1 >operandstack
+	' substract PERFORM-INFIX-CONVERSION operandstack> -> 2 }T
 
