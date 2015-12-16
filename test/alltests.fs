@@ -10,6 +10,7 @@ CR .( Running all tests ) CR CR
   S" stacktest.fs" INCLUDED
   S" swikittest.fs" INCLUDED
   S" operatortest.fs" INCLUDED
+  S" interpretertest.fs" INCLUDED
 
 
 #ERRORS @ 0> [IF]

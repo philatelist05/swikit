@@ -7,6 +7,16 @@ stack-size INIT-STACK VALUE operatorstack
 stack-size INIT-STACK VALUE operandstack
 
 
+: s>number? ( addr u -- d f )
+\ Handles bug in original
+\ s>number? word
+	2DUP S" -" COMPARE
+	IF \ not equal
+		s>number?
+	ELSE
+		2DROP 0. FALSE
+	THEN
+;
 
 : HANDLE-NUMBER ( c-addr count -- )
 	s>number?
@@ -61,19 +71,27 @@ stack-size INIT-STACK VALUE operandstack
 	THEN
 ;
 
-: TO-INFIX ( count c-addr -- )
+: TO-INFIX { count c-addr -- }
+\ Unfortunately locals are here
+\ necessary to restore the stack frame
+\ after 'ENDTRY-IFERROR'
 	TRY
-		HANDLE-NUMBER
+		count c-addr HANDLE-NUMBER
 	ENDTRY-IFERROR
-		HANDLE-WORD
+		DROP \ drop errno
+		count c-addr HANDLE-WORD
 	THEN
 ;
 
 
 DEFER interpret-expr
 : ` ( -- )
-\ Marks the beginning of an infix
-\ region.
+	\ Marks the beginning of an infix
+	\ region.
+	
+	operatorstack CLEAR
+	operandstack CLEAR
+	
 	BEGIN
 		PARSE-WORD 2DUP \ Split input by whitespace
 	s" ´" COMPARE WHILE
@@ -86,11 +104,18 @@ DEFER interpret-expr
 	\ Marks the end of an
 	\ infix region
 	\ pop entire stack and exec
+
 	BEGIN
 		operatorstack ISEMPTY? INVERT
 	WHILE
 		operandstack operatorstack POP exec
 	REPEAT
+	
+	\ pop single result if size <> 0 to data stack
+	operandstack SIZE
+	IF
+		operandstack POP
+	THEN
 ;
 
 ' TO-INFIX IS interpret-expr

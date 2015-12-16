@@ -215,9 +215,9 @@ T{	' multiply >operatorstack
 \ ------------------------------------------------------------------------
 TESTING END OF INFIX REGION
 
+\ empty operatorstack and result on data stack
 T{	' multiply ' substract >operatorstack
 	3 2 1 >operandstack
-	´ operatorstack> -> }T
-T{	' multiply ' substract >operatorstack
-	3 2 1 >operandstack
-	´ operandstack> -> -5 }T
+	´ operatorstack> -> -5 }T
+
+
