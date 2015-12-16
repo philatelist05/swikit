@@ -47,7 +47,7 @@ stack-size INIT-STACK VALUE operandstack
 			FALSE ( ? )
 		THEN
 	WHILE
-		operatorstack POP exec
+		operandstack operatorstack POP exec
 	REPEAT
 	R> operatorstack PUSH
 ;
@@ -89,7 +89,7 @@ DEFER interpret-expr
 	BEGIN
 		operatorstack ISEMPTY? INVERT
 	WHILE
-		operatorstack POP exec
+		operandstack operatorstack POP exec
 	REPEAT
 ;
 

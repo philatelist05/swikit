@@ -2,6 +2,7 @@ INCLUDE ../swikit.fs
 \ ------------------------------------------------------------------------
 \ Some utils for easier testing
 
+
 : stack> ( a-addr -- n1 ... nj )
 	>R
 	BEGIN
@@ -12,6 +13,27 @@ INCLUDE ../swikit.fs
 		RDROP
 ;
 
+: >operatorstack ( xt1 ... xtj -- )
+	operatorstack CLEAR
+	BEGIN
+		DEPTH 0 >
+	WHILE
+		operatorstack PUSH
+	REPEAT
+;
+
+: >operandstack ( n1 ... nj -- )
+	operandstack CLEAR
+	BEGIN
+		DEPTH 0 >
+	WHILE
+		operandstack PUSH
+	REPEAT
+;
+
+: operandstack> ( -- n1 ... nj)
+	operandstack stack>
+;
 
 DEFER add
 DEFER substract
@@ -19,27 +41,6 @@ DEFER multiply
 DEFER divide
 DEFER topower
 
-
-\ some predefined stacks with specific content
-
-: _operatorstack
-	operatorstack CLEAR
-;
-
-: +operatorstack 
-	_operatorstack
-	['] add operatorstack PUSH
-;
-
-: -operatorstack 
-	_operatorstack
-	['] substract operatorstack PUSH
-;
-
-: ^operatorstack
-	_operatorstack
-	['] topower operatorstack PUSH
-;
 
 
 \ ------------------------------------------------------------------------
@@ -87,11 +88,11 @@ T{ 1 2 ` swap ´ 3 -> 2 1 3 }T
 \ ------------------------------------------------------------------------
 TESTING NUMBER CONVERSION
 
-T{ s" 1" HANDLE-NUMBER operandstack stack> -> 1 }T
-T{ s" 0" HANDLE-NUMBER operandstack stack> -> 0 }T
-T{ s" -1" HANDLE-NUMBER operandstack stack> -> -1 }T
-T{ s" -999" HANDLE-NUMBER operandstack stack> -> -999 }T
-T{ s" 999" HANDLE-NUMBER operandstack stack> -> 999 }T
+T{ s" 1" HANDLE-NUMBER operandstack> -> 1 }T
+T{ s" 0" HANDLE-NUMBER operandstack> -> 0 }T
+T{ s" -1" HANDLE-NUMBER operandstack> -> -1 }T
+T{ s" -999" HANDLE-NUMBER operandstack> -> -999 }T
+T{ s" 999" HANDLE-NUMBER operandstack> -> 999 }T
 
 \ ------------------------------------------------------------------------
 TESTING WORD LOOKUP
@@ -112,7 +113,7 @@ T{ s" plus" LOOKUP-WORD SWAP DROP -> TRUE }T
 T{ s" minus" LOOKUP-WORD SWAP DROP -> TRUE }T
 
 \ ------------------------------------------------------------------------
-TESTING PERFORMING INFIX CONVERSION
+TESTING PERFORMING INFIX CONVERSION PUSH TO OPERATOR STACK
 
 ALSO infix-words
 ' + IS add
@@ -124,53 +125,65 @@ PREVIOUS
 
 
 \ emtpy operator stack -> push to operator stack
-T{	_operatorstack 
+T{	>operatorstack 
 	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' substract PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
 
 
 
 \ emtpy operator stack -> nothing to execute
-T{	_operatorstack 
+T{	>operatorstack 
 	' add PERFORM-INFIX-CONVERSION -> }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' substract PERFORM-INFIX-CONVERSION -> }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' multiply PERFORM-INFIX-CONVERSION -> }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' divide PERFORM-INFIX-CONVERSION -> }T
-T{	_operatorstack 
+T{	>operatorstack 
 	' topower PERFORM-INFIX-CONVERSION -> }T
 
 
 \ both operators are left associative but different precedence
-T{	+operatorstack
+T{	' add >operatorstack
 	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
-T{	+operatorstack
+T{	' add >operatorstack
 	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
 
 \ left and right associative
-T{	+operatorstack
+T{	' add >operatorstack
 	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
 	
 \ both operators are left associative but different precedence
-T{	-operatorstack
+T{	' substract >operatorstack
 	' multiply PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
-T{	-operatorstack
+T{	' substract >operatorstack
 	' divide PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
 
 \ left and right associative
-T{	-operatorstack
+T{	' substract >operatorstack
 	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
 
 \ both operators are right associative with same precedence
-T{	^operatorstack
+T{	' topower >operatorstack
 	' topower PERFORM-INFIX-CONVERSION operatorstack SIZE -> 2 }T
+
+\ ------------------------------------------------------------------------
+TESTING PERFORMING INFIX CONVERSION EXECUTE OPERATOR
+
+\ left associative and equal precendence
+T{	' add >operatorstack
+	2 1 >operandstack
+	' add PERFORM-INFIX-CONVERSION operatorstack SIZE -> 1 }T
+
+T{	' add >operatorstack
+	2 1 >operandstack
+	' add PERFORM-INFIX-CONVERSION operandstack> -> 3 }T
 
