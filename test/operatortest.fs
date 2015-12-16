@@ -4,11 +4,34 @@ CR CR
 
 also infix-words
 
+\ some helper words
+: >stack \ ( n1 ... nj -- a-addr )
+	DEPTH INIT-STACK >R
+	BEGIN
+		DEPTH 0 >
+	WHILE
+		R@ PUSH
+	REPEAT
+	R>
+;
 
 \ ------------------------------------------------------------------------
 TESTING BASIC ASSUMPTIONS
 
 T{ -> }T
+
+\ ------------------------------------------------------------------------
+TESTING OPERATOR IMPLEMENTATIONS
+
+T{ 2 1 >stack plus -> 3 }T
+T{ 1 2 >stack plus -> 3 }T
+T{ 1 2 >stack minus -> 1 }T
+T{ 2 1 >stack minus -> -1 }T
+T{ 2 3 >stack mul -> 6 }T
+T{ 3 2 >stack mul -> 6 }T
+T{ 2 6 >stack div -> 3 }T
+T{ 6 2 >stack div -> 0 }T \ integer division
+
 
 \ ------------------------------------------------------------------------
 TESTING BASIC ARITHMETIC OPERATORS
@@ -65,47 +88,5 @@ T{ ' ) is-left?  -> TRUE }T
 T{ ' ) is-right?  -> FALSE }T
 T{ ' ) prec  -> 0 }T
 T{ ' ) exec  ->  ')' }T
-
-\ ------------------------------------------------------------------------
-TESTING RULES
-
-: +stack
-	3 INIT-STACK
-	DUP
-	['] + SWAP PUSH
-;
-
-
-T{ +stack ' ( condition rule1 EXECUTE -> TRUE }T
-T{ +stack ' ) condition rule1 EXECUTE -> TRUE }T
-T{ +stack ' + condition rule1 EXECUTE -> FALSE }T
-T{ +stack ' - condition rule1 EXECUTE -> FALSE }T
-T{ +stack ' * condition rule1 EXECUTE -> FALSE }T
-T{ +stack ' / condition rule1 EXECUTE -> FALSE }T
-
-T{ +stack ' + condition rule2 EXECUTE -> FALSE }T
-T{ +stack ' - condition rule2 EXECUTE -> FALSE }T
-T{ +stack ' * condition rule2 EXECUTE -> TRUE }T
-T{ +stack ' / condition rule2 EXECUTE -> TRUE }T
-T{ +stack ' ^ condition rule2 EXECUTE -> TRUE }T
-
-T{ +stack ' + condition rule3 EXECUTE -> FALSE }T
-T{ +stack ' - condition rule3 EXECUTE -> FALSE }T
-T{ +stack ' * condition rule3 EXECUTE -> FALSE }T
-T{ +stack ' / condition rule3 EXECUTE -> FALSE }T
-T{ +stack ' ^ condition rule3 EXECUTE -> FALSE }T
-
-T{ +stack ' + condition rule4 EXECUTE -> TRUE }T
-T{ +stack ' - condition rule4 EXECUTE -> TRUE }T
-T{ +stack ' * condition rule4 EXECUTE -> TRUE }T
-T{ +stack ' / condition rule4 EXECUTE -> TRUE }T
-T{ +stack ' ^ condition rule4 EXECUTE -> FALSE }T
-
-T{ +stack ' + condition rule5 EXECUTE -> FALSE }T
-T{ +stack ' - condition rule5 EXECUTE -> FALSE }T
-T{ +stack ' * condition rule5 EXECUTE -> FALSE }T
-T{ +stack ' / condition rule5 EXECUTE -> FALSE }T
-T{ +stack ' ^ condition rule5 EXECUTE -> TRUE }T
-
 
 PREVIOUS

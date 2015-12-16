@@ -15,41 +15,37 @@ INCLUDE stack.fs
 1 CONSTANT condition
 0 CONSTANT action
 
-
-\ Operator implementations
+\ operator implementations
 DEFER power
+' ABORT IS power \ no ^ in forth
+
 DEFER mul
+:NONAME ( a-addr -- )
+	DUP POP SWAP POP SWAP *
+; IS mul
+
 DEFER div
+:NONAME ( a-addr -- )
+	DUP POP SWAP POP SWAP /
+; IS div
+
 DEFER plus
+:NONAME ( a-addr -- )
+	DUP POP SWAP POP SWAP +
+; IS plus
+
 DEFER minus
+:NONAME ( a-addr -- )
+	DUP POP SWAP POP SWAP -
+; IS minus
+
+\ Currently not implemented!
 DEFER p(
+' ABORT IS p(
+
 DEFER p)
+' ABORT IS p)
 
-
-
-\ Some helper words
-DEFER op-prec
-DEFER op-#params
-DEFER op-exec
-DEFER op-isleft?
-DEFER op-isright?
-
-
-\ Definition of Rules
-\ see : http://csis.pace.edu/~wolf/CS122/infix-postfix.htm
-: RULE ( xt1 xt2 -- )
-	CREATE , ,
-	DOES> ( n addr -- )
-	SWAP CELLS + @
-;
-
-
-\ Condition ( stack op-xt -- ? )    Action ( stack op-xt -- )
-:NONAME SWAP DROP op-#params 0 = ;     :NONAME op-exec DROP ;          RULE rule1 \ no params -> directly evaluate
-:NONAME op-prec SWAP POP op-prec > ;   :NONAME SWAP PUSH ;             RULE rule2 \ prec of incoming symbol > prec top of stack -> push
-:NONAME op-prec SWAP POP op-prec < ;   :NONAME SWAP POP op-exec PUSH ; RULE rule3 \ prec of incoming symbol < prec top of stack -> pop top and push incoming
-:NONAME SWAP DROP op-isleft? ;         :NONAME SWAP POP op-exec PUSH ; RULE rule4 \ equal prec and left-assoc -> pop top and push incoming
-:NONAME SWAP DROP op-isright? ;        :NONAME SWAP PUSH ;             RULE rule5 \ equal prec and right-assoc -> push
 
 
 : OPERATOR ( n1 n2 n3 n4 --  )
@@ -67,7 +63,6 @@ DEFER op-isright?
 ' minus   2        left       2       OPERATOR -
 ' p(      0        left       0       OPERATOR (
 ' p)      0        left       0       OPERATOR )
-
 
 \ Restore original compilation wordlist
 SET-CURRENT
@@ -95,21 +90,5 @@ SET-CURRENT
 	right =
 ;
 
-' prec IS op-prec
-' #params IS op-#params
-' exec IS op-exec
-' is-left? IS op-isleft?
-' is-right? IS op-isright?
-
-
-' ABORT IS power
-' ABORT IS mul
-' ABORT IS div
-' ABORT IS plus
-' ABORT IS minus
-' ABORT IS p(
-' ABORT IS p)
-
 \ Restore original search order
 PREVIOUS
-
