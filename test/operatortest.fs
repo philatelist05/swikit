@@ -36,57 +36,40 @@ T{ 6 2 >stack div -> 0 }T \ integer division
 \ ------------------------------------------------------------------------
 TESTING BASIC ARITHMETIC OPERATORS
 
-\ overwrite operator implementations
-
-:NONAME '^' ; IS power
-:NONAME '*' ; IS mul
-:NONAME '/' ; IS div
-:NONAME '+' ; IS plus
-:NONAME '-' ; IS minus
-:NONAME '(' ; IS p(
-:NONAME ')' ; IS p)
-
 
 T{ ' ^ #params  -> 2 }T
 T{ ' ^ is-left?  -> FALSE }T
 T{ ' ^ is-right?  -> TRUE }T
 T{ ' ^ prec  -> 4 }T
-T{ ' ^ exec  ->  '^' }T
 
 T{ ' * #params  -> 2 }T
 T{ ' * is-left?  -> TRUE }T
 T{ ' * is-right?  -> FALSE }T
 T{ ' * prec  -> 3 }T
-T{ ' * exec  ->  '*' }T
 
 T{ ' / #params  -> 2 }T
 T{ ' / is-left?  -> TRUE }T
 T{ ' / is-right?  -> FALSE }T
 T{ ' / prec  -> 3 }T
-T{ ' / exec  ->  '/' }T
 
 T{ ' + #params  -> 2 }T
 T{ ' + is-left?  -> TRUE }T
 T{ ' + is-right?  -> FALSE }T
 T{ ' + prec  -> 2 }T
-T{ ' + exec  ->  '+' }T
 
 T{ ' - #params  -> 2 }T
 T{ ' - is-left?  -> TRUE }T
 T{ ' - is-right?  -> FALSE }T
 T{ ' - prec  -> 2 }T
-T{ ' - exec  ->  '-' }T
 
 T{ ' ( #params  -> 0 }T
 T{ ' ( is-left?  -> TRUE }T
 T{ ' ( is-right?  -> FALSE }T
 T{ ' ( prec  -> 0 }T
-T{ ' ( exec  ->  '(' }T
 
 T{ ' ) #params  -> 0 }T
 T{ ' ) is-left?  -> TRUE }T
 T{ ' ) is-right?  -> FALSE }T
 T{ ' ) prec  -> 0 }T
-T{ ' ) exec  ->  ')' }T
 
 PREVIOUS

@@ -16,35 +16,34 @@ INCLUDE stack.fs
 0 CONSTANT action
 
 \ operator implementations
-DEFER power
-' ABORT IS power \ no ^ in forth
+: power
+	ABORT \ no ^ in forth
+;
 
-DEFER mul
-:NONAME ( a-addr -- )
+: mul ( a-addr -- )
 	DUP POP SWAP POP SWAP *
-; IS mul
+;
 
-DEFER div
-:NONAME ( a-addr -- )
+: div ( a-addr -- )
 	DUP POP SWAP POP SWAP /
-; IS div
+;
 
-DEFER plus
-:NONAME ( a-addr -- )
+: plus ( a-addr -- )
 	DUP POP SWAP POP SWAP +
-; IS plus
+;
 
-DEFER minus
-:NONAME ( a-addr -- )
+: minus ( a-addr -- )
 	DUP POP SWAP POP SWAP -
-; IS minus
+;
 
 \ Currently not implemented!
-DEFER p(
-' ABORT IS p(
+: p(
+	ABORT
+;
 
-DEFER p)
-' ABORT IS p)
+: p)
+	ABORT
+;
 
 
 
