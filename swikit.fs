@@ -71,7 +71,7 @@ stack-size INIT-STACK VALUE operandstack
 	THEN
 ;
 
-: TO-INFIX ( count c-addr -- )
+: INTERPRET-EXPR  ( count c-addr -- )
 	2DUP HANDLE-NUMBER INVERT
 	IF
 		HANDLE-WORD
@@ -81,7 +81,6 @@ stack-size INIT-STACK VALUE operandstack
 ;
 
 
-DEFER interpret-expr
 : ` ( -- )
 	\ Marks the beginning of an infix
 	\ region.
@@ -91,8 +90,9 @@ DEFER interpret-expr
 	
 	BEGIN
 		PARSE-WORD 2DUP \ Split input by whitespace
-	s" ´" COMPARE WHILE
-	interpret-expr
+	s" ´" COMPARE
+	WHILE
+		INTERPRET-EXPR
 	REPEAT
 	EVALUATE \ e.g. ´
 ;
@@ -115,4 +115,3 @@ DEFER interpret-expr
 	THEN
 ;
 
-' TO-INFIX IS interpret-expr
