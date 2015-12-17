@@ -58,15 +58,6 @@ INCLUDE stack.fs
 	SWAP PUSH
 ;
 
-\ Currently not implemented!
-: p(
-	ABORT
-;
-
-: p)
-	ABORT
-;
-
 
 
 : OPERATOR ( n1 n2 n3 n4 --  )
@@ -82,8 +73,7 @@ INCLUDE stack.fs
 ' div     2        left       3       OPERATOR /
 ' plus    2        left       2       OPERATOR +
 ' minus   2        left       2       OPERATOR -
-' p(      0        left       0       OPERATOR (
-' p)      0        left       0       OPERATOR )
+
 
 \ Restore original compilation wordlist
 SET-CURRENT

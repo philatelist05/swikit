@@ -79,14 +79,5 @@ T{ ' - is-left?  -> TRUE }T
 T{ ' - is-right?  -> FALSE }T
 T{ ' - prec  -> 2 }T
 
-T{ ' ( #params  -> 0 }T
-T{ ' ( is-left?  -> TRUE }T
-T{ ' ( is-right?  -> FALSE }T
-T{ ' ( prec  -> 0 }T
-
-T{ ' ) #params  -> 0 }T
-T{ ' ) is-left?  -> TRUE }T
-T{ ' ) is-right?  -> FALSE }T
-T{ ' ) prec  -> 0 }T
 
 PREVIOUS
