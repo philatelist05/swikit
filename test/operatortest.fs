@@ -47,6 +47,7 @@ T{ 2 0 >stack DUP power stack> -> 0 }T
 T{ 1 2 >stack DUP power stack> -> 2 }T
 T{ 1 -2 >stack DUP power stack> -> -2 }T
 T{ 3 -2 >stack DUP power stack> -> -8 }T
+T{ 0 0 >stack DUP power stack> -> 1 }T
 
 
 \ ------------------------------------------------------------------------
