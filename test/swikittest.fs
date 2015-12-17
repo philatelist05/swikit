@@ -92,11 +92,14 @@ T{ 1 2 ` swap ´ 3 -> 2 1 3 }T
 \ ------------------------------------------------------------------------
 TESTING NUMBER CONVERSION
 
-T{ s" 1" HANDLE-NUMBER operandstack> -> 1 }T
-T{ s" 0" HANDLE-NUMBER operandstack> -> 0 }T
-T{ s" -1" HANDLE-NUMBER operandstack> -> -1 }T
-T{ s" -999" HANDLE-NUMBER operandstack> -> -999 }T
-T{ s" 999" HANDLE-NUMBER operandstack> -> 999 }T
+T{ s" 1" HANDLE-NUMBER operandstack> -> TRUE 1 }T
+T{ s" 0" HANDLE-NUMBER operandstack> -> TRUE 0 }T
+T{ s" -1" HANDLE-NUMBER operandstack> -> TRUE -1 }T
+T{ s" -999" HANDLE-NUMBER operandstack> -> TRUE -999 }T
+T{ s" 999" HANDLE-NUMBER operandstack> -> TRUE 999 }T
+T{ s" abc" HANDLE-NUMBER operandstack> -> FALSE }T
+T{ s" -" HANDLE-NUMBER operandstack> -> FALSE }T
+T{ s"  " HANDLE-NUMBER operandstack> -> FALSE }T
 
 \ ------------------------------------------------------------------------
 TESTING WORD LOOKUP
@@ -105,16 +108,16 @@ TESTING WORD LOOKUP
 T{ s" abc" LOOKUP-WORD -> FALSE }T
 T{ s"  " LOOKUP-WORD -> FALSE }T
 T{ s" dummy" LOOKUP-WORD -> FALSE }T
-T{ s" +" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" -" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" *" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" /" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" ^" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" power" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" mul" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" div" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" plus" LOOKUP-WORD SWAP DROP -> TRUE }T
-T{ s" minus" LOOKUP-WORD SWAP DROP -> TRUE }T
+T{ s" +" LOOKUP-WORD NIP -> TRUE }T
+T{ s" -" LOOKUP-WORD NIP -> TRUE }T
+T{ s" *" LOOKUP-WORD NIP -> TRUE }T
+T{ s" /" LOOKUP-WORD NIP -> TRUE }T
+T{ s" ^" LOOKUP-WORD NIP -> TRUE }T
+T{ s" power" LOOKUP-WORD NIP -> TRUE }T
+T{ s" mul" LOOKUP-WORD NIP -> TRUE }T
+T{ s" div" LOOKUP-WORD NIP -> TRUE }T
+T{ s" plus" LOOKUP-WORD NIP -> TRUE }T
+T{ s" minus" LOOKUP-WORD NIP -> TRUE }T
 
 \ ------------------------------------------------------------------------
 TESTING PERFORMING INFIX CONVERSION PUSH TO OPERATOR STACK

@@ -18,12 +18,12 @@ stack-size INIT-STACK VALUE operandstack
 	THEN
 ;
 
-: HANDLE-NUMBER ( c-addr count -- )
-	s>number?
-	IF \ rest length == 0 -> a fully converted number
-		DROP operandstack PUSH \ push number (single cell) to operand stack
+: HANDLE-NUMBER ( c-addr count -- ? )
+	s>number? NIP DUP ( n ? ? )
+	IF
+		SWAP operandstack PUSH \ push number (single cell) to operand stack
 	ELSE \ no number
-		2DROP THROW
+		NIP
 	THEN
 ;
 
@@ -71,15 +71,12 @@ stack-size INIT-STACK VALUE operandstack
 	THEN
 ;
 
-: TO-INFIX { count c-addr -- }
-\ Unfortunately locals are here
-\ necessary to restore the stack frame
-\ after 'ENDTRY-IFERROR'
-	TRY
-		count c-addr HANDLE-NUMBER
-	ENDTRY-IFERROR
-		DROP \ drop errno
-		count c-addr HANDLE-WORD
+: TO-INFIX ( count c-addr -- )
+	2DUP HANDLE-NUMBER INVERT
+	IF
+		HANDLE-WORD
+	ELSE
+		2DROP
 	THEN
 ;
 
