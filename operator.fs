@@ -28,7 +28,11 @@ INCLUDE stack.fs
 	
 	1 SWAP ?DUP 
 	IF 
-		0 
+		\ handle negative exponent as 0 ^ x
+		\ make loop count positive
+		DUP 0 < IF ROT DROP 0 ROT ROT NEGATE THEN
+
+		0
 		DO
 			OVER * 
 		LOOP
