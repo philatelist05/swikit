@@ -20,6 +20,7 @@ CR CR .( There were errors in tests: ) #ERRORS @ . .( errors ) CR CR
 \ I found no better way to produce exit code 1
 \ Unfortunately Gforth does not offer modifying
 \ a variable like 'EXIT-CODE'
+\ TODO use abort or only inline if and internal if of throw
 THROW
 
 [ELSE]

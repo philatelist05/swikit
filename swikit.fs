@@ -67,6 +67,7 @@ stack-size INIT-STACK VALUE operandstack
 	IF \ found
 		PERFORM-INFIX-CONVERSION
 	ELSE \ not found
+	\ TODO use abort or only inline if and internal if of throw
 		THROW
 	THEN
 ;
@@ -84,10 +85,10 @@ stack-size INIT-STACK VALUE operandstack
 : ` ( -- )
 	\ Marks the beginning of an infix
 	\ region.
-	
+
 	operatorstack CLEAR
 	operandstack CLEAR
-	
+
 	BEGIN
 		PARSE-WORD 2DUP \ Split input by whitespace
 	s" ´" COMPARE
@@ -107,11 +108,11 @@ stack-size INIT-STACK VALUE operandstack
 	WHILE
 		operandstack operatorstack POP exec
 	REPEAT
-	
+
 	\ pop single result if size <> 0 to data stack
+	\ Fixed from loop to only on if
 	operandstack SIZE
 	IF
 		operandstack POP
 	THEN
 ;
-

@@ -25,22 +25,24 @@ INCLUDE stack.fs
 \ operator implementations
 : power ( a-addr -- )
 	DUP BINARY
-	
-	1 SWAP ?DUP 
-	IF 
+
+	1 SWAP ?DUP
+	IF
 		\ handle negative exponent as 0 ^ x
 		\ make loop count positive
 		DUP 0 < IF ROT DROP 0 ROT ROT NEGATE THEN
 
 		0
 		DO
-			OVER * 
+			OVER *
 		LOOP
 	THEN
 	NIP
-	
+
 	SWAP PUSH
 ;
+
+\ TODO Use defining word
 
 : mul ( a-addr -- )
 	DUP BINARY *
