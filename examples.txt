@@ -1,0 +1,15 @@
+5 5 + ` 5 + 5 ´ .s \ 20
+
+` 3 * 2 ´ .s \ 6
+
+10 ` 2 * 3 ^ 3 - 64 / 2 ^ 3 ´ + .s \ 56
+
+` -2 ^ -3 ´ \ 0 exeptional case
+
+` a + 5 ´ \ exception message example
+
+` 6 / 2 ´ negate \ -3
+
+1 2 ` 2 ^ 3 ´ 3 \ 1 2 8 3
+
+` 2 * 50 / 6 + 3 * 25 / 6 + 3 * 50 / 18 + 6 * 25 / 18 ´ .s \ 45.83 but is 44 intager division!

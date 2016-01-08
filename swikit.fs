@@ -67,8 +67,8 @@ stack-size INIT-STACK VALUE operandstack
 	IF \ found
 		PERFORM-INFIX-CONVERSION
 	ELSE \ not found
-	\ TODO use abort or only inline if and internal if of throw
-		THROW
+	\ internal if of throw with message
+		s" Unknown infix operation" exception THROW
 	THEN
 ;
 
